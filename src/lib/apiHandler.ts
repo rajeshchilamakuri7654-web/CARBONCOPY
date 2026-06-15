@@ -32,7 +32,7 @@ export function withApiHandler<TParams = any>(
   handler: (ctx: ApiContext<TParams>) => Promise<NextResponse | Response>,
   options: { requireAuth?: boolean } = { requireAuth: true }
 ) {
-  return async (req: Request, context: { params?: TParams }) => {
+  return async (req: Request, context: any) => {
     try {
       const session = await getServerSession(authOptions);
 

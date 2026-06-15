@@ -6,8 +6,15 @@
  * role checks which can be bypassed.
  */
 
-export { default } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
 
+const proxy = withAuth({
+  callbacks: {
+    authorized: ({ token }) => !!token,
+  },
+});
+
+export default proxy;
 export const config = {
   /**
    * Routes that require authentication.

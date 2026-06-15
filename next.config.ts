@@ -8,7 +8,7 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // output: "export", // Removed for Cloud Run compatibility
 };
 
 export default withPWA(nextConfig);
