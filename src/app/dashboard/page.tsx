@@ -217,20 +217,25 @@ export default function Dashboard() {
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="flex flex-col gap-10 pt-24 pb-12 w-full"
+        className="flex flex-col gap-10 pt-24 pb-12 w-full relative z-10"
       >
+        {/* Dynamic Background Element */}
+        <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-emerald-500/10 to-transparent -z-10 pointer-events-none" />
         {/* ── Header ───────────────────────────────────────────────────── */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-200 pb-8"
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-200/50 pb-8"
         >
-          <div className="flex flex-col gap-2">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mt-2">
+          <div className="flex flex-col gap-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/50 text-emerald-700 text-xs font-bold w-fit mb-2">
+              <Sparkles className="w-3 h-3" /> Dashboard Hub
+            </div>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mt-2 text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-emerald-800 to-slate-900">
               Overview
             </h1>
-            <p className="text-slate-500 text-sm max-w-lg leading-relaxed">
-              Welcome back, {firstName}. Your sustainability metrics and carbon reduction
-              trajectory are synchronized.
+            <p className="text-slate-500 text-base max-w-lg leading-relaxed">
+              Welcome back, <span className="font-semibold text-slate-700">{firstName}</span>. Your sustainability metrics and carbon reduction
+              trajectory are synchronized and looking great.
             </p>
           </div>
           <Link
@@ -312,8 +317,9 @@ export default function Dashboard() {
             {/* Main emissions trajectory chart */}
             <motion.div
               variants={itemVariants}
-              className="lg:col-span-2 glass-panel rounded-3xl p-6 md:p-8"
+              className="lg:col-span-2 glass-panel glass-panel-hover rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/50 relative overflow-hidden group"
             >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/30 rounded-full blur-3xl -z-10 group-hover:bg-emerald-200/30 transition-colors" />
               <EmissionsChart data={trendData} />
             </motion.div>
 
@@ -321,7 +327,7 @@ export default function Dashboard() {
             <motion.div variants={itemVariants} className="flex flex-col gap-6">
               {/* AI Insights */}
               <div
-                className="glass-panel rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden bg-gradient-to-br from-emerald-50 to-white border-emerald-100"
+                className="glass-panel glass-panel-hover rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden bg-gradient-to-br from-emerald-50 to-white border-emerald-200 shadow-lg shadow-emerald-100/50"
                 role="region"
                 aria-label="AI analysis insights"
               >
@@ -345,7 +351,7 @@ export default function Dashboard() {
               </div>
 
               {/* Carbon Score radial */}
-              <div className="glass-panel rounded-3xl p-6 flex flex-col items-center justify-center flex-1">
+              <div className="glass-panel glass-panel-hover rounded-3xl p-6 flex flex-col items-center justify-center flex-1 shadow-lg shadow-slate-200/50">
                 <CarbonScoreRadial score={scorePercent} />
               </div>
             </motion.div>
