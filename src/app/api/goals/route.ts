@@ -1,81 +1,78 @@
+/**
+ * @file src/app/api/goals/route.ts
+ * @description REST API handler for user carbon reduction goals.
+ *
+ * GET  /api/goals — Fetch all goals for the authenticated user
+ * POST /api/goals — Create a new reduction goal and award points
+ *
+ * Security: Both endpoints require authentication.
+ * Validation: POST body validated with Zod.
+ */
+
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { withApiHandler } from "@/lib/apiHandler";
 import { prisma } from "@/lib/db";
+import { createGoalSchema, safeValidate } from "@/lib/validators";
 
-// GET: Retrieve user goals
-export async function GET(req: Request) {
-  try {
-    const session = await getServerSession(authOptions);
+// ─── GET Handler ──────────────────────────────────────────────────────────────
 
-    if (!session || !session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+/**
+ * Returns all goals for the currently authenticated user,
+ * ordered by most recently created first.
+ */
+export const GET = withApiHandler(async ({ session }) => {
+  const goals = await prisma.goal.findMany({
+    where: { userId: session.user.id },
+    orderBy: { startDate: "desc" },
+  });
 
-    const userId = (session.user as any).id;
+  return NextResponse.json({ goals });
+});
 
-    const goals = await prisma.goal.findMany({
-      where: { userId },
-      orderBy: { startDate: "desc" },
-    });
+// ─── POST Handler ─────────────────────────────────────────────────────────────
 
-    return NextResponse.json({ goals });
-  } catch (error) {
-    console.error("Error fetching goals:", error);
-    return NextResponse.json(
-      { error: "An error occurred while fetching goals" },
-      { status: 500 }
-    );
+/**
+ * Creates a new reduction goal for the authenticated user.
+ * Awards 25 eco-points for setting a goal.
+ */
+export const POST = withApiHandler(async ({ req, session }) => {
+  // Validate request body
+  const body: unknown = await req.json();
+  const validation = safeValidate(createGoalSchema, body);
+
+  if (!validation.success) {
+    return NextResponse.json({ error: validation.error }, { status: 422 });
   }
-}
 
-// POST: Create a new goal
-export async function POST(req: Request) {
-  try {
-    const session = await getServerSession(authOptions);
+  const {
+    title,
+    category,
+    targetReduction,
+    targetValue,
+    currentValue,
+    endDate,
+  } = validation.data;
 
-    if (!session || !session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const userId = (session.user as any).id;
-    const body = await req.json();
-    const { title, category, targetReduction, targetValue, currentValue, endDate } = body;
-
-    if (!title || !category || !targetValue || !endDate) {
-      return NextResponse.json(
-        { error: "Missing required fields: title, category, targetValue, endDate" },
-        { status: 400 }
-      );
-    }
-
-    const goal = await prisma.goal.create({
+  // Create goal and award points in parallel
+  const [goal] = await Promise.all([
+    prisma.goal.create({
       data: {
-        userId,
+        userId: session.user.id,
         title,
         category,
-        targetReduction: Number(targetReduction) || 0,
-        targetValue: Number(targetValue),
-        currentValue: Number(currentValue) || 0,
+        targetReduction,
+        targetValue,
+        currentValue,
         endDate: new Date(endDate),
         completed: false,
       },
-    });
+    }),
+    prisma.user.update({
+      where: { id: session.user.id },
+      data: { points: { increment: 25 } },
+    }),
+  ]);
 
-    // Award user points for setting a goal
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        points: { increment: 25 },
-      },
-    });
-
-    return NextResponse.json({ goal });
-  } catch (error) {
-    console.error("Error creating goal:", error);
-    return NextResponse.json(
-      { error: "An error occurred while creating the goal" },
-      { status: 500 }
-    );
-  }
-}
+  return NextResponse.json({ goal }, { status: 201 });
+});

@@ -55,7 +55,14 @@ export const ModelName = {
   EmissionRecord: 'EmissionRecord',
   Goal: 'Goal',
   UserBadge: 'UserBadge',
-  EducationArticle: 'EducationArticle'
+  EducationArticle: 'EducationArticle',
+  Squad: 'Squad',
+  SquadMember: 'SquadMember',
+  AIInsight: 'AIInsight',
+  FootprintSimulation: 'FootprintSimulation',
+  Organization: 'Organization',
+  GridAlert: 'GridAlert',
+  EcoTokenWallet: 'EcoTokenWallet'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,7 +88,8 @@ export const UserScalarFieldEnum = {
   streak: 'streak',
   lastLogin: 'lastLogin',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  organizationId: 'organizationId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -151,6 +159,89 @@ export const EducationArticleScalarFieldEnum = {
 } as const
 
 export type EducationArticleScalarFieldEnum = (typeof EducationArticleScalarFieldEnum)[keyof typeof EducationArticleScalarFieldEnum]
+
+
+export const SquadScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  inviteCode: 'inviteCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SquadScalarFieldEnum = (typeof SquadScalarFieldEnum)[keyof typeof SquadScalarFieldEnum]
+
+
+export const SquadMemberScalarFieldEnum = {
+  id: 'id',
+  squadId: 'squadId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt'
+} as const
+
+export type SquadMemberScalarFieldEnum = (typeof SquadMemberScalarFieldEnum)[keyof typeof SquadMemberScalarFieldEnum]
+
+
+export const AIInsightScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  content: 'content',
+  category: 'category',
+  actionable: 'actionable',
+  createdAt: 'createdAt'
+} as const
+
+export type AIInsightScalarFieldEnum = (typeof AIInsightScalarFieldEnum)[keyof typeof AIInsightScalarFieldEnum]
+
+
+export const FootprintSimulationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  scenarioName: 'scenarioName',
+  originalTotal: 'originalTotal',
+  projectedTotal: 'projectedTotal',
+  savingsCo2: 'savingsCo2',
+  savingsCost: 'savingsCost',
+  createdAt: 'createdAt'
+} as const
+
+export type FootprintSimulationScalarFieldEnum = (typeof FootprintSimulationScalarFieldEnum)[keyof typeof FootprintSimulationScalarFieldEnum]
+
+
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  industry: 'industry',
+  employeeCount: 'employeeCount',
+  createdAt: 'createdAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const GridAlertScalarFieldEnum = {
+  id: 'id',
+  region: 'region',
+  status: 'status',
+  message: 'message',
+  active: 'active',
+  createdAt: 'createdAt'
+} as const
+
+export type GridAlertScalarFieldEnum = (typeof GridAlertScalarFieldEnum)[keyof typeof GridAlertScalarFieldEnum]
+
+
+export const EcoTokenWalletScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  balance: 'balance',
+  walletAddress: 'walletAddress',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EcoTokenWalletScalarFieldEnum = (typeof EcoTokenWalletScalarFieldEnum)[keyof typeof EcoTokenWalletScalarFieldEnum]
 
 
 export const SortOrder = {

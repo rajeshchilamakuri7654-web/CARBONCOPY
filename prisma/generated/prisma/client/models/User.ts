@@ -47,6 +47,7 @@ export type UserMinAggregateOutputType = {
   lastLogin: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  organizationId: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -60,6 +61,7 @@ export type UserMaxAggregateOutputType = {
   lastLogin: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  organizationId: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -73,6 +75,7 @@ export type UserCountAggregateOutputType = {
   lastLogin: number
   createdAt: number
   updatedAt: number
+  organizationId: number
   _all: number
 }
 
@@ -98,6 +101,7 @@ export type UserMinAggregateInputType = {
   lastLogin?: true
   createdAt?: true
   updatedAt?: true
+  organizationId?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -111,6 +115,7 @@ export type UserMaxAggregateInputType = {
   lastLogin?: true
   createdAt?: true
   updatedAt?: true
+  organizationId?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -124,6 +129,7 @@ export type UserCountAggregateInputType = {
   lastLogin?: true
   createdAt?: true
   updatedAt?: true
+  organizationId?: true
   _all?: true
 }
 
@@ -224,6 +230,7 @@ export type UserGroupByOutputType = {
   lastLogin: Date | null
   createdAt: Date
   updatedAt: Date
+  organizationId: string | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -260,9 +267,15 @@ export type UserWhereInput = {
   lastLogin?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  organizationId?: Prisma.StringNullableFilter<"User"> | string | null
   emissionRecords?: Prisma.EmissionRecordListRelationFilter
   goals?: Prisma.GoalListRelationFilter
   badges?: Prisma.UserBadgeListRelationFilter
+  squads?: Prisma.SquadMemberListRelationFilter
+  insights?: Prisma.AIInsightListRelationFilter
+  simulations?: Prisma.FootprintSimulationListRelationFilter
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  wallet?: Prisma.XOR<Prisma.EcoTokenWalletNullableScalarRelationFilter, Prisma.EcoTokenWalletWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -276,9 +289,15 @@ export type UserOrderByWithRelationInput = {
   lastLogin?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   emissionRecords?: Prisma.EmissionRecordOrderByRelationAggregateInput
   goals?: Prisma.GoalOrderByRelationAggregateInput
   badges?: Prisma.UserBadgeOrderByRelationAggregateInput
+  squads?: Prisma.SquadMemberOrderByRelationAggregateInput
+  insights?: Prisma.AIInsightOrderByRelationAggregateInput
+  simulations?: Prisma.FootprintSimulationOrderByRelationAggregateInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
+  wallet?: Prisma.EcoTokenWalletOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -295,9 +314,15 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastLogin?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  organizationId?: Prisma.StringNullableFilter<"User"> | string | null
   emissionRecords?: Prisma.EmissionRecordListRelationFilter
   goals?: Prisma.GoalListRelationFilter
   badges?: Prisma.UserBadgeListRelationFilter
+  squads?: Prisma.SquadMemberListRelationFilter
+  insights?: Prisma.AIInsightListRelationFilter
+  simulations?: Prisma.FootprintSimulationListRelationFilter
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  wallet?: Prisma.XOR<Prisma.EcoTokenWalletNullableScalarRelationFilter, Prisma.EcoTokenWalletWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -311,6 +336,7 @@ export type UserOrderByWithAggregationInput = {
   lastLogin?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -332,6 +358,7 @@ export type UserScalarWhereWithAggregatesInput = {
   lastLogin?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  organizationId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -348,6 +375,11 @@ export type UserCreateInput = {
   emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -361,9 +393,14 @@ export type UserUncheckedCreateInput = {
   lastLogin?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organizationId?: string | null
   emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -380,6 +417,11 @@ export type UserUpdateInput = {
   emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -393,9 +435,14 @@ export type UserUncheckedUpdateInput = {
   lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -409,6 +456,7 @@ export type UserCreateManyInput = {
   lastLogin?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organizationId?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -435,6 +483,7 @@ export type UserUncheckedUpdateManyInput = {
   lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -448,6 +497,7 @@ export type UserCountOrderByAggregateInput = {
   lastLogin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -466,6 +516,7 @@ export type UserMaxOrderByAggregateInput = {
   lastLogin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -479,6 +530,7 @@ export type UserMinOrderByAggregateInput = {
   lastLogin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -489,6 +541,16 @@ export type UserSumOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -557,6 +619,104 @@ export type UserUpdateOneRequiredWithoutBadgesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBadgesInput, Prisma.UserUpdateWithoutBadgesInput>, Prisma.UserUncheckedUpdateWithoutBadgesInput>
 }
 
+export type UserCreateNestedOneWithoutSquadsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSquadsInput, Prisma.UserUncheckedCreateWithoutSquadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSquadsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSquadsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSquadsInput, Prisma.UserUncheckedCreateWithoutSquadsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSquadsInput
+  upsert?: Prisma.UserUpsertWithoutSquadsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSquadsInput, Prisma.UserUpdateWithoutSquadsInput>, Prisma.UserUncheckedUpdateWithoutSquadsInput>
+}
+
+export type UserCreateNestedOneWithoutInsightsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInsightsInput, Prisma.UserUncheckedCreateWithoutInsightsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInsightsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInsightsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInsightsInput, Prisma.UserUncheckedCreateWithoutInsightsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInsightsInput
+  upsert?: Prisma.UserUpsertWithoutInsightsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInsightsInput, Prisma.UserUpdateWithoutInsightsInput>, Prisma.UserUncheckedUpdateWithoutInsightsInput>
+}
+
+export type UserCreateNestedOneWithoutSimulationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSimulationsInput, Prisma.UserUncheckedCreateWithoutSimulationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSimulationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSimulationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSimulationsInput, Prisma.UserUncheckedCreateWithoutSimulationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSimulationsInput
+  upsert?: Prisma.UserUpsertWithoutSimulationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSimulationsInput, Prisma.UserUpdateWithoutSimulationsInput>, Prisma.UserUncheckedUpdateWithoutSimulationsInput>
+}
+
+export type UserCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrganizationInput, Prisma.UserUncheckedCreateWithoutOrganizationInput> | Prisma.UserCreateWithoutOrganizationInput[] | Prisma.UserUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrganizationInput | Prisma.UserCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.UserCreateManyOrganizationInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrganizationInput, Prisma.UserUncheckedCreateWithoutOrganizationInput> | Prisma.UserCreateWithoutOrganizationInput[] | Prisma.UserUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrganizationInput | Prisma.UserCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.UserCreateManyOrganizationInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrganizationInput, Prisma.UserUncheckedCreateWithoutOrganizationInput> | Prisma.UserCreateWithoutOrganizationInput[] | Prisma.UserUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrganizationInput | Prisma.UserCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.UserUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.UserCreateManyOrganizationInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.UserUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutOrganizationInput | Prisma.UserUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrganizationInput, Prisma.UserUncheckedCreateWithoutOrganizationInput> | Prisma.UserCreateWithoutOrganizationInput[] | Prisma.UserUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrganizationInput | Prisma.UserCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.UserUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.UserCreateManyOrganizationInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.UserUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutOrganizationInput | Prisma.UserUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutWalletInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWalletInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWalletNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWalletInput
+  upsert?: Prisma.UserUpsertWithoutWalletInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWalletInput, Prisma.UserUpdateWithoutWalletInput>, Prisma.UserUncheckedUpdateWithoutWalletInput>
+}
+
 export type UserCreateWithoutEmissionRecordsInput = {
   id?: string
   email: string
@@ -570,6 +730,11 @@ export type UserCreateWithoutEmissionRecordsInput = {
   updatedAt?: Date | string
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutEmissionRecordsInput = {
@@ -583,8 +748,13 @@ export type UserUncheckedCreateWithoutEmissionRecordsInput = {
   lastLogin?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organizationId?: string | null
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutEmissionRecordsInput = {
@@ -616,6 +786,11 @@ export type UserUpdateWithoutEmissionRecordsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmissionRecordsInput = {
@@ -629,8 +804,13 @@ export type UserUncheckedUpdateWithoutEmissionRecordsInput = {
   lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGoalsInput = {
@@ -646,6 +826,11 @@ export type UserCreateWithoutGoalsInput = {
   updatedAt?: Date | string
   emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGoalsInput = {
@@ -659,8 +844,13 @@ export type UserUncheckedCreateWithoutGoalsInput = {
   lastLogin?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organizationId?: string | null
   emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGoalsInput = {
@@ -692,6 +882,11 @@ export type UserUpdateWithoutGoalsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -705,8 +900,13 @@ export type UserUncheckedUpdateWithoutGoalsInput = {
   lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBadgesInput = {
@@ -722,6 +922,11 @@ export type UserCreateWithoutBadgesInput = {
   updatedAt?: Date | string
   emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBadgesInput = {
@@ -735,8 +940,13 @@ export type UserUncheckedCreateWithoutBadgesInput = {
   lastLogin?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organizationId?: string | null
   emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBadgesInput = {
@@ -768,6 +978,11 @@ export type UserUpdateWithoutBadgesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBadgesInput = {
@@ -781,8 +996,545 @@ export type UserUncheckedUpdateWithoutBadgesInput = {
   lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSquadsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSquadsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizationId?: string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSquadsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSquadsInput, Prisma.UserUncheckedCreateWithoutSquadsInput>
+}
+
+export type UserUpsertWithoutSquadsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSquadsInput, Prisma.UserUncheckedUpdateWithoutSquadsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSquadsInput, Prisma.UserUncheckedCreateWithoutSquadsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSquadsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSquadsInput, Prisma.UserUncheckedUpdateWithoutSquadsInput>
+}
+
+export type UserUpdateWithoutSquadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSquadsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutInsightsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutInsightsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizationId?: string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutInsightsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInsightsInput, Prisma.UserUncheckedCreateWithoutInsightsInput>
+}
+
+export type UserUpsertWithoutInsightsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInsightsInput, Prisma.UserUncheckedUpdateWithoutInsightsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInsightsInput, Prisma.UserUncheckedCreateWithoutInsightsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInsightsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInsightsInput, Prisma.UserUncheckedUpdateWithoutInsightsInput>
+}
+
+export type UserUpdateWithoutInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSimulationsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSimulationsInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizationId?: string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSimulationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSimulationsInput, Prisma.UserUncheckedCreateWithoutSimulationsInput>
+}
+
+export type UserUpsertWithoutSimulationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSimulationsInput, Prisma.UserUncheckedUpdateWithoutSimulationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSimulationsInput, Prisma.UserUncheckedCreateWithoutSimulationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSimulationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSimulationsInput, Prisma.UserUncheckedUpdateWithoutSimulationsInput>
+}
+
+export type UserUpdateWithoutSimulationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSimulationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutOrganizationInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+  wallet?: Prisma.EcoTokenWalletUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrganizationInput, Prisma.UserUncheckedCreateWithoutOrganizationInput>
+}
+
+export type UserCreateManyOrganizationInputEnvelope = {
+  data: Prisma.UserCreateManyOrganizationInput | Prisma.UserCreateManyOrganizationInput[]
+}
+
+export type UserUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOrganizationInput, Prisma.UserUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrganizationInput, Prisma.UserUncheckedCreateWithoutOrganizationInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOrganizationInput, Prisma.UserUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type UserUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutOrganizationInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringNullableFilter<"User"> | string | null
+  password?: Prisma.StringFilter<"User"> | string
+  role?: Prisma.StringFilter<"User"> | string
+  points?: Prisma.IntFilter<"User"> | number
+  streak?: Prisma.IntFilter<"User"> | number
+  lastLogin?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  organizationId?: Prisma.StringNullableFilter<"User"> | string | null
+}
+
+export type UserCreateWithoutWalletInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emissionRecords?: Prisma.EmissionRecordCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationCreateNestedManyWithoutUserInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutEmployeesInput
+}
+
+export type UserUncheckedCreateWithoutWalletInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizationId?: string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  squads?: Prisma.SquadMemberUncheckedCreateNestedManyWithoutUserInput
+  insights?: Prisma.AIInsightUncheckedCreateNestedManyWithoutUserInput
+  simulations?: Prisma.FootprintSimulationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWalletInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+}
+
+export type UserUpsertWithoutWalletInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWalletInput, Prisma.UserUncheckedUpdateWithoutWalletInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWalletInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWalletInput, Prisma.UserUncheckedUpdateWithoutWalletInput>
+}
+
+export type UserUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutEmployeesNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateManyOrganizationInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password: string
+  role?: string
+  points?: number
+  streak?: number
+  lastLogin?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emissionRecords?: Prisma.EmissionRecordUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emissionRecords?: Prisma.EmissionRecordUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  squads?: Prisma.SquadMemberUncheckedUpdateManyWithoutUserNestedInput
+  insights?: Prisma.AIInsightUncheckedUpdateManyWithoutUserNestedInput
+  simulations?: Prisma.FootprintSimulationUncheckedUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.EcoTokenWalletUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  streak?: Prisma.IntFieldUpdateOperationsInput | number
+  lastLogin?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -794,12 +1546,18 @@ export type UserCountOutputType = {
   emissionRecords: number
   goals: number
   badges: number
+  squads: number
+  insights: number
+  simulations: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   emissionRecords?: boolean | UserCountOutputTypeCountEmissionRecordsArgs
   goals?: boolean | UserCountOutputTypeCountGoalsArgs
   badges?: boolean | UserCountOutputTypeCountBadgesArgs
+  squads?: boolean | UserCountOutputTypeCountSquadsArgs
+  insights?: boolean | UserCountOutputTypeCountInsightsArgs
+  simulations?: boolean | UserCountOutputTypeCountSimulationsArgs
 }
 
 /**
@@ -833,6 +1591,27 @@ export type UserCountOutputTypeCountBadgesArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.UserBadgeWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSquadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SquadMemberWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInsightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AIInsightWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSimulationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FootprintSimulationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -845,9 +1624,15 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lastLogin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organizationId?: boolean
   emissionRecords?: boolean | Prisma.User$emissionRecordsArgs<ExtArgs>
   goals?: boolean | Prisma.User$goalsArgs<ExtArgs>
   badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
+  squads?: boolean | Prisma.User$squadsArgs<ExtArgs>
+  insights?: boolean | Prisma.User$insightsArgs<ExtArgs>
+  simulations?: boolean | Prisma.User$simulationsArgs<ExtArgs>
+  organization?: boolean | Prisma.User$organizationArgs<ExtArgs>
+  wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -862,6 +1647,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastLogin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organizationId?: boolean
+  organization?: boolean | Prisma.User$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -875,6 +1662,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastLogin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organizationId?: boolean
+  organization?: boolean | Prisma.User$organizationArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -888,17 +1677,27 @@ export type UserSelectScalar = {
   lastLogin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organizationId?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "password" | "role" | "points" | "streak" | "lastLogin" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "password" | "role" | "points" | "streak" | "lastLogin" | "createdAt" | "updatedAt" | "organizationId", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   emissionRecords?: boolean | Prisma.User$emissionRecordsArgs<ExtArgs>
   goals?: boolean | Prisma.User$goalsArgs<ExtArgs>
   badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
+  squads?: boolean | Prisma.User$squadsArgs<ExtArgs>
+  insights?: boolean | Prisma.User$insightsArgs<ExtArgs>
+  simulations?: boolean | Prisma.User$simulationsArgs<ExtArgs>
+  organization?: boolean | Prisma.User$organizationArgs<ExtArgs>
+  wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.User$organizationArgs<ExtArgs>
+}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.User$organizationArgs<ExtArgs>
+}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -906,6 +1705,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     emissionRecords: Prisma.$EmissionRecordPayload<ExtArgs>[]
     goals: Prisma.$GoalPayload<ExtArgs>[]
     badges: Prisma.$UserBadgePayload<ExtArgs>[]
+    squads: Prisma.$SquadMemberPayload<ExtArgs>[]
+    insights: Prisma.$AIInsightPayload<ExtArgs>[]
+    simulations: Prisma.$FootprintSimulationPayload<ExtArgs>[]
+    organization: Prisma.$OrganizationPayload<ExtArgs> | null
+    wallet: Prisma.$EcoTokenWalletPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -918,6 +1722,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     lastLogin: Date | null
     createdAt: Date
     updatedAt: Date
+    organizationId: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1315,6 +2120,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   emissionRecords<T extends Prisma.User$emissionRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emissionRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmissionRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   goals<T extends Prisma.User$goalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$goalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   badges<T extends Prisma.User$badgesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  squads<T extends Prisma.User$squadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$squadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SquadMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  insights<T extends Prisma.User$insightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$insightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AIInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  simulations<T extends Prisma.User$simulationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$simulationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FootprintSimulationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  organization<T extends Prisma.User$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  wallet<T extends Prisma.User$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletArgs<ExtArgs>>): Prisma.Prisma__EcoTokenWalletClient<runtime.Types.Result.GetResult<Prisma.$EcoTokenWalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1354,6 +2164,7 @@ export interface UserFieldRefs {
   readonly lastLogin: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly organizationId: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -1606,6 +2417,10 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Users.
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1676,6 +2491,10 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1814,6 +2633,116 @@ export type User$badgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.UserBadgeScalarFieldEnum | Prisma.UserBadgeScalarFieldEnum[]
+}
+
+/**
+ * User.squads
+ */
+export type User$squadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SquadMember
+   */
+  select?: Prisma.SquadMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SquadMember
+   */
+  omit?: Prisma.SquadMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SquadMemberInclude<ExtArgs> | null
+  where?: Prisma.SquadMemberWhereInput
+  orderBy?: Prisma.SquadMemberOrderByWithRelationInput | Prisma.SquadMemberOrderByWithRelationInput[]
+  cursor?: Prisma.SquadMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SquadMemberScalarFieldEnum | Prisma.SquadMemberScalarFieldEnum[]
+}
+
+/**
+ * User.insights
+ */
+export type User$insightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AIInsight
+   */
+  select?: Prisma.AIInsightSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AIInsight
+   */
+  omit?: Prisma.AIInsightOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AIInsightInclude<ExtArgs> | null
+  where?: Prisma.AIInsightWhereInput
+  orderBy?: Prisma.AIInsightOrderByWithRelationInput | Prisma.AIInsightOrderByWithRelationInput[]
+  cursor?: Prisma.AIInsightWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AIInsightScalarFieldEnum | Prisma.AIInsightScalarFieldEnum[]
+}
+
+/**
+ * User.simulations
+ */
+export type User$simulationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FootprintSimulation
+   */
+  select?: Prisma.FootprintSimulationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FootprintSimulation
+   */
+  omit?: Prisma.FootprintSimulationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FootprintSimulationInclude<ExtArgs> | null
+  where?: Prisma.FootprintSimulationWhereInput
+  orderBy?: Prisma.FootprintSimulationOrderByWithRelationInput | Prisma.FootprintSimulationOrderByWithRelationInput[]
+  cursor?: Prisma.FootprintSimulationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FootprintSimulationScalarFieldEnum | Prisma.FootprintSimulationScalarFieldEnum[]
+}
+
+/**
+ * User.organization
+ */
+export type User$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Organization
+   */
+  select?: Prisma.OrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Organization
+   */
+  omit?: Prisma.OrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationWhereInput
+}
+
+/**
+ * User.wallet
+ */
+export type User$walletArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EcoTokenWallet
+   */
+  select?: Prisma.EcoTokenWalletSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EcoTokenWallet
+   */
+  omit?: Prisma.EcoTokenWalletOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EcoTokenWalletInclude<ExtArgs> | null
+  where?: Prisma.EcoTokenWalletWhereInput
 }
 
 /**

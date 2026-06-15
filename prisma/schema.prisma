@@ -21,6 +21,16 @@ model User {
   emissionRecords  EmissionRecord[]
   goals            Goal[]
   badges           UserBadge[]
+  squads           SquadMember[]
+  insights         AIInsight[]
+  simulations      FootprintSimulation[]
+  
+  // Enterprise ESG
+  organizationId   String?
+  organization     Organization? @relation(fields: [organizationId], references: [id])
+  
+  // Web3
+  wallet           EcoTokenWallet?
 }
 
 model EmissionRecord {
@@ -91,4 +101,80 @@ model EducationArticle {
   reads       Int      @default(0)
   carbonSaved Float    @default(0) // CO2 saved in kg by applying this guide
   createdAt   DateTime @default(now())
+}
+
+model Squad {
+  id          String        @id @default(uuid())
+  name        String        @unique
+  description String?
+  inviteCode  String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  members     SquadMember[]
+}
+
+model SquadMember {
+  id        String   @id @default(uuid())
+  squadId   String
+  userId    String
+  role      String   @default("MEMBER") // ADMIN, MEMBER
+  joinedAt  DateTime @default(now())
+  
+  squad     Squad    @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([squadId, userId])
+}
+
+model AIInsight {
+  id        String   @id @default(uuid())
+  userId    String
+  content   String
+  category  String   // transport, food, energy, general
+  actionable Boolean @default(true)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model FootprintSimulation {
+  id              String   @id @default(uuid())
+  userId          String
+  scenarioName    String
+  originalTotal   Float
+  projectedTotal  Float
+  savingsCo2      Float
+  savingsCost     Float    @default(0)
+  createdAt       DateTime @default(now())
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Organization {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  industry    String
+  employeeCount Int    @default(0)
+  createdAt   DateTime @default(now())
+
+  employees   User[]
+}
+
+model GridAlert {
+  id          String   @id @default(uuid())
+  region      String
+  status      String   // e.g., "High Carbon", "Clean Energy"
+  message     String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model EcoTokenWallet {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  balance     Float    @default(0) // $ECO tokens
+  walletAddress String @unique
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

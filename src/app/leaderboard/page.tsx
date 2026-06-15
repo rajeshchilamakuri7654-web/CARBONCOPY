@@ -45,11 +45,11 @@ export default function Leaderboard() {
   };
 
   return (
-    <div className="flex flex-col gap-10 py-6">
+    <main className="flex flex-col gap-10 py-6" aria-labelledby="leaderboard-heading">
       
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-extrabold text-white flex items-center gap-2">
+        <h1 id="leaderboard-heading" className="text-3xl font-extrabold text-white flex items-center gap-2">
           <Trophy className="h-7 w-7 text-indigo-400" />
           Eco Champion Leaderboard
         </h1>
@@ -77,12 +77,12 @@ export default function Leaderboard() {
               <table className="w-full text-left text-xs md:text-sm border-collapse">
                 <thead>
                   <tr className="border-b border-zinc-900 text-zinc-500 text-[10px] font-bold uppercase tracking-widest">
-                    <th className="pb-3 pl-2">Rank</th>
-                    <th className="pb-3">Name</th>
-                    <th className="pb-3">Eco Points</th>
-                    <th className="pb-3">Streak</th>
-                    <th className="pb-3">Badges</th>
-                    <th className="pb-3 pr-2 text-right">Latest Footprint</th>
+                    <th scope="col" className="pb-3 pl-2">Rank</th>
+                    <th scope="col" className="pb-3">Name</th>
+                    <th scope="col" className="pb-3">Eco Points</th>
+                    <th scope="col" className="pb-3">Streak</th>
+                    <th scope="col" className="pb-3">Badges</th>
+                    <th scope="col" className="pb-3 pr-2 text-right">Latest Footprint</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900/50">
@@ -195,6 +195,6 @@ export default function Leaderboard() {
         </div>
       )}
 
-    </div>
+    </main>
   );
 }

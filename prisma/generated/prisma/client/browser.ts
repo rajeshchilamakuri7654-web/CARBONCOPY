@@ -42,3 +42,38 @@ export type UserBadge = Prisma.UserBadgeModel
  * 
  */
 export type EducationArticle = Prisma.EducationArticleModel
+/**
+ * Model Squad
+ * 
+ */
+export type Squad = Prisma.SquadModel
+/**
+ * Model SquadMember
+ * 
+ */
+export type SquadMember = Prisma.SquadMemberModel
+/**
+ * Model AIInsight
+ * 
+ */
+export type AIInsight = Prisma.AIInsightModel
+/**
+ * Model FootprintSimulation
+ * 
+ */
+export type FootprintSimulation = Prisma.FootprintSimulationModel
+/**
+ * Model Organization
+ * 
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model GridAlert
+ * 
+ */
+export type GridAlert = Prisma.GridAlertModel
+/**
+ * Model EcoTokenWallet
+ * 
+ */
+export type EcoTokenWallet = Prisma.EcoTokenWalletModel

@@ -13,10 +13,16 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
-      "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "react/no-unescaped-entities": "off",
-      "react-hooks/exhaustive-deps": "off"
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "react/no-unescaped-entities": "warn",
+      "react-hooks/exhaustive-deps": "warn",
+      "jsx-a11y/alt-text": "error",
+      "jsx-a11y/aria-props": "error",
+      "jsx-a11y/aria-proptypes": "error",
+      "jsx-a11y/aria-unsupported-elements": "error",
+      "jsx-a11y/role-has-required-aria-props": "error",
+      "jsx-a11y/role-supports-aria-props": "error",
     }
   }
 ];

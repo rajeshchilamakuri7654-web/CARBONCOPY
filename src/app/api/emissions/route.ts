@@ -1,6 +1,17 @@
+/**
+ * @file src/app/api/emissions/route.ts
+ * @description REST API handler for carbon emission records.
+ *
+ * GET  /api/emissions — Fetch all emission records for the authenticated user
+ * POST /api/emissions — Save a new emission record and update gamification state
+ *
+ * Security: All endpoints require authentication via NextAuth session.
+ * Validation: Request bodies are validated with Zod before processing.
+ */
+
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { withApiHandler } from "@/lib/apiHandler";
 import { prisma } from "@/lib/db";
 import {
   calculateTransportationEmissions,
@@ -8,166 +19,171 @@ import {
   calculateFoodEmissions,
   calculateWasteEmissions,
   calculateScoreAndRating,
-  FoodType,
 } from "@/lib/carbonCalculator";
+import { createEmissionSchema, safeValidate } from "@/lib/validators";
+import type { FoodType } from "@/types";
 
-// GET: Fetch historical emission entries for the current user
-export async function GET(req: Request) {
-  try {
-    const session = await getServerSession(authOptions);
+// ─── GET Handler ──────────────────────────────────────────────────────────────
 
-    if (!session || !session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+/**
+ * Fetches all historical emission records for the currently authenticated user,
+ * ordered by most recent first.
+ */
+export const GET = withApiHandler(async ({ session }) => {
+  const entries = await prisma.emissionRecord.findMany({
+    where: { userId: session.user.id },
+    orderBy: { date: "asc" },
+  });
 
-    const userId = (session.user as any).id;
+  return NextResponse.json({ entries });
+});
 
-    const entries = await prisma.emissionRecord.findMany({
-      where: { userId },
-      orderBy: { date: "desc" },
-    });
+// ─── POST Handler ─────────────────────────────────────────────────────────────
 
-    return NextResponse.json({ entries });
-  } catch (error) {
-    console.error("Error fetching emissions:", error);
+/**
+ * Creates a new emission record for the authenticated user.
+ * Also handles gamification: awards points, updates streak, and checks for new badges.
+ */
+export const POST = withApiHandler(async ({ req, session }) => {
+  // Validate request body
+  const body: unknown = await req.json();
+  const validation = safeValidate(createEmissionSchema, body);
+
+  if (!validation.success) {
     return NextResponse.json(
-      { error: "An error occurred while fetching emission records" },
-      { status: 500 }
+      { error: validation.error },
+      { status: 422 }
     );
   }
-}
 
-// POST: Save a new carbon footprint entry
-export async function POST(req: Request) {
-  try {
-    const session = await getServerSession(authOptions);
+  const {
+    carDistance,
+    bikeDistance,
+    busDistance,
+    trainDistance,
+    flightDistance,
+    electricityKwh,
+    foodType,
+    wasteKg,
+  } = validation.data;
 
-    if (!session || !session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  // ── Calculate sub-emissions ──────────────────────────────────────────────
+  const transportEmissions = calculateTransportationEmissions(
+    carDistance,
+    bikeDistance,
+    busDistance,
+    trainDistance,
+    flightDistance
+  );
+  const electricityEmissions = calculateElectricityEmissions(electricityKwh);
+  const foodEmissions = calculateFoodEmissions(foodType as FoodType);
+  const wasteEmissions = calculateWasteEmissions(wasteKg);
+  const totalEmissions = Number(
+    (transportEmissions + electricityEmissions + foodEmissions + wasteEmissions).toFixed(2)
+  );
+  const { score, rating } = calculateScoreAndRating(totalEmissions);
 
-    const userId = (session.user as any).id;
-    const body = await req.json();
-
-    const {
-      carDistance = 0,
-      bikeDistance = 0,
-      busDistance = 0,
-      trainDistance = 0,
-      flightDistance = 0,
-      electricityKwh = 0,
-      foodType = "mixed",
-      wasteKg = 0,
-    } = body;
-
-    // Calculate sub-emissions
-    const transportEmissions = calculateTransportationEmissions(
+  // ── Persist the record ───────────────────────────────────────────────────
+  const record = await prisma.emissionRecord.create({
+    data: {
+      userId: session.user.id,
       carDistance,
       bikeDistance,
       busDistance,
       trainDistance,
-      flightDistance
-    );
-    const electricityEmissions = calculateElectricityEmissions(electricityKwh);
-    const foodEmissions = calculateFoodEmissions(foodType as FoodType);
-    const wasteEmissions = calculateWasteEmissions(wasteKg);
+      flightDistance,
+      transportEmissions,
+      electricityKwh,
+      electricityEmissions,
+      foodType,
+      foodEmissions,
+      wasteKg,
+      wasteEmissions,
+      totalEmissions,
+      carbonScore: score,
+      rating,
+    },
+  });
 
-    const totalEmissions = Number(
-      (transportEmissions + electricityEmissions + foodEmissions + wasteEmissions).toFixed(2)
-    );
+  // ── Gamification: Points & Streak ────────────────────────────────────────
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: { badges: true },
+  });
 
-    const { score, rating } = calculateScoreAndRating(totalEmissions);
+  let pointsEarned = 50; // Base points for submitting a log
+  let newStreak = user?.streak ?? 1;
 
-    // Save to database
-    const record = await prisma.emissionRecord.create({
-      data: {
-        userId,
-        carDistance,
-        bikeDistance,
-        busDistance,
-        trainDistance,
-        flightDistance,
-        transportEmissions,
-        electricityKwh,
-        electricityEmissions,
-        foodType,
-        foodEmissions,
-        wasteKg,
-        wasteEmissions,
-        totalEmissions,
-        carbonScore: score,
-        rating,
-      },
-    });
+  if (user?.lastLogin) {
+    const hoursSinceLast =
+      (Date.now() - new Date(user.lastLogin).getTime()) / (1000 * 60 * 60);
 
-    // Update user points and streak gamification
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { badges: true },
-    });
-
-    let pointsEarned = 50; // standard points for submitting a log
-    let newStreak = user?.streak || 1;
-
-    // Optional streak verification logic (if logged in last 24-48 hours)
-    if (user?.lastLogin) {
-      const hoursSinceLastLogin = (new Date().getTime() - new Date(user.lastLogin).getTime()) / (1000 * 60 * 60);
-      if (hoursSinceLastLogin > 20 && hoursSinceLastLogin < 48) {
-        newStreak += 1;
-        pointsEarned += 20; // bonus for keeping the streak alive!
-      } else if (hoursSinceLastLogin >= 48) {
-        newStreak = 1; // reset streak
-      }
+    if (hoursSinceLast > 20 && hoursSinceLast < 48) {
+      // Streak maintained: bonus points
+      newStreak += 1;
+      pointsEarned += 20;
+    } else if (hoursSinceLast >= 48) {
+      // Streak broken: reset to 1
+      newStreak = 1;
     }
+  }
 
-    const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        points: { increment: pointsEarned },
-        streak: newStreak,
-        lastLogin: new Date(),
-      },
+  const updatedUser = await prisma.user.update({
+    where: { id: session.user.id },
+    data: {
+      points: { increment: pointsEarned },
+      streak: newStreak,
+      lastLogin: new Date(),
+    },
+  });
+
+  // ── Gamification: Badge Checks ───────────────────────────────────────────
+  const badgePromises: Promise<unknown>[] = [];
+
+  // "Eco Explorer" badge: Logged 3+ times
+  const hasExplorerBadge = user?.badges.some((b) => b.badgeName === "Eco Explorer");
+  if (!hasExplorerBadge) {
+    const recordCount = await prisma.emissionRecord.count({
+      where: { userId: session.user.id },
     });
-
-    // Gamification check: Check if new badges should be awarded
-    const hasExplorerBadge = user?.badges.some((b) => b.badgeName === "Eco Explorer");
-    const recordCount = await prisma.emissionRecord.count({ where: { userId } });
-    
-    if (recordCount >= 3 && !hasExplorerBadge) {
-      await prisma.userBadge.create({
-        data: {
-          userId,
-          badgeName: "Eco Explorer",
-          description: "Logged your emissions at least 3 times. Tracking builds consistency!",
-          icon: "Compass",
-        },
-      });
+    if (recordCount >= 3) {
+      badgePromises.push(
+        prisma.userBadge.create({
+          data: {
+            userId: session.user.id,
+            badgeName: "Eco Explorer",
+            description: "Logged emissions at least 3 times. Consistency builds habits!",
+            icon: "Compass",
+          },
+        })
+      );
     }
+  }
 
-    // Gamification check: Low Carbon footprint award (Carbon Warrior)
-    const hasWarriorBadge = user?.badges.some((b) => b.badgeName === "Carbon Warrior");
-    if (totalEmissions < 250 && !hasWarriorBadge) {
-      await prisma.userBadge.create({
+  // "Carbon Warrior" badge: Monthly footprint below 250 kg CO₂e
+  const hasWarriorBadge = user?.badges.some((b) => b.badgeName === "Carbon Warrior");
+  if (!hasWarriorBadge && totalEmissions < 250) {
+    badgePromises.push(
+      prisma.userBadge.create({
         data: {
-          userId,
+          userId: session.user.id,
           badgeName: "Carbon Warrior",
-          description: "Achieved an ultra-sustainable monthly carbon output under 250 kg CO2.",
+          description: "Achieved an ultra-sustainable monthly output under 250 kg CO₂e.",
           icon: "Shield",
         },
-      });
-    }
-
-    return NextResponse.json({
-      record,
-      pointsEarned,
-      newStreak,
-      totalPoints: updatedUser.points,
-    });
-  } catch (error) {
-    console.error("Error creating emission record:", error);
-    return NextResponse.json(
-      { error: "An error occurred while saving emission record" },
-      { status: 500 }
+      })
     );
   }
-}
+
+  // Run badge checks in parallel
+  if (badgePromises.length > 0) {
+    await Promise.all(badgePromises);
+  }
+
+  return NextResponse.json({
+    record,
+    pointsEarned,
+    newStreak,
+    totalPoints: updatedUser.points,
+  });
+});
